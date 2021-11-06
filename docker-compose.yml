@@ -1,0 +1,89 @@
+version: '3.8'
+services:
+
+    app:
+        image: zeropingheroes/lanager:develop
+        container_name: app
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - laravel-storage:/var/www/storage
+            - ./conf.d/app/php/conf.d/local.ini:/usr/local/etc/php/conf.d/local.ini
+        environment:
+            APP_NAME: ${APP_NAME:-LANager}
+            APP_ENV: ${APP_ENV:-production}
+            APP_KEY: ${APP_KEY}
+            APP_DEBUG: ${APP_DEBUG:-false}
+            APP_URL: ${APP_URL}
+            APP_TIMEZONE: ${APP_TIMEZONE}
+            APP_LOCALE: ${APP_LOCALE:-en}
+            STEAM_API_KEY: ${STEAM_API_KEY}
+            GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+            DB_CONNECTION: ${DB_CONNECTION:-mysql}
+            DB_HOST: ${DB_HOST:-db}
+            DB_PORT: ${DB_PORT:-3306}
+            DB_DATABASE: ${DB_DATABASE:-lanager}
+            DB_USERNAME: ${DB_USERNAME:-lanager}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            CACHE_DRIVER: ${CACHE_DRIVER:-file}
+            SESSION_DRIVER: ${SESSION_DRIVER:-database}
+            SESSION_LIFETIME: ${SESSION_LIFETIME:-7200}
+            LOG_CHANNEL: ${LOG_CHANNEL:-stdout}
+        networks:
+            - app-network
+        depends_on:
+            - db
+        labels:
+            ofelia.enabled: "true"
+            ofelia.job-exec.artisan-schedule-run.schedule: "@every 1m"
+            ofelia.job-exec.artisan-schedule-run.command: "php /var/www/artisan schedule:run"
+    scheduler:
+        image: mcuadros/ofelia:latest
+        container_name: scheduler
+        depends_on:
+            - app
+        command: daemon --docker
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+    webserver:
+        image: nginx:alpine
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            # - ./:/var/www - TODO: switch to container that combines nginx and php-fpm, as they both need code access
+            - ./conf.d/webserver/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+        depends_on:
+            - app
+    db:
+        image: mysql:8
+        container_name: db
+        restart: unless-stopped
+        tty: true
+        expose:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE:-lanager}
+            MYSQL_USER: ${DB_USERNAME:-lanager}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        volumes:
+            - db-data:/var/lib/mysql
+            - ./conf.d/db/mysql/conf.d:/etc/mysql/conf.d
+        networks:
+            - app-network
+networks:
+    app-network:
+        driver: bridge
+volumes:
+    db-data:
+        driver: local
+    laravel-storage:
+        driver: local

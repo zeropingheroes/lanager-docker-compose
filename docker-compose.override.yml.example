@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+
+    app:
+        volumes:
+            - "$PATH_TO_LANAGER/:/var/www"
+            - "$PATH_TO_LANAGER/storage:/var/www/storage"
+        user: "${UID}:${GID}"
+    db:
+        ports:
+            - "3306:3306"
