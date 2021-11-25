@@ -6,10 +6,13 @@ services:
         container_name: app
         restart: unless-stopped
         tty: true
-        working_dir: /var/www
+        ports:
+            - "80:8080"
+        working_dir: /var/www/lanager
         volumes:
-            - laravel-storage:/var/www/storage
-            - ./conf.d/app/php/conf.d/local.ini:/usr/local/etc/php/conf.d/local.ini
+            - laravel-storage:/var/www/lanager/storage
+            - ./configs/app/php.ini:/etc/php7/conf.d/lanager.ini
+            - ./configs/app/nginx.conf:/etc/nginx/conf.d/lanager.conf
         environment:
             APP_NAME: ${APP_NAME:-LANager}
             APP_ENV: ${APP_ENV:-production}
@@ -38,7 +41,7 @@ services:
         labels:
             ofelia.enabled: "true"
             ofelia.job-exec.artisan-schedule-run.schedule: "@every 1m"
-            ofelia.job-exec.artisan-schedule-run.command: "php /var/www/artisan schedule:run"
+            ofelia.job-exec.artisan-schedule-run.command: "php /var/www/lanager/artisan schedule:run"
     scheduler:
         image: mcuadros/ofelia:latest
         container_name: scheduler
@@ -47,21 +50,6 @@ services:
         command: daemon --docker
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-    webserver:
-        image: nginx:alpine
-        container_name: webserver
-        restart: unless-stopped
-        tty: true
-        ports:
-            - "80:80"
-            - "443:443"
-        volumes:
-            # - ./:/var/www - TODO: switch to container that combines nginx and php-fpm, as they both need code access
-            - ./conf.d/webserver/nginx/conf.d/:/etc/nginx/conf.d/
-        networks:
-            - app-network
-        depends_on:
-            - app
     db:
         image: mysql:8
         container_name: db
@@ -76,7 +64,7 @@ services:
             MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
         volumes:
             - db-data:/var/lib/mysql
-            - ./conf.d/db/mysql/conf.d:/etc/mysql/conf.d
+            - ./configs/db/mysql.cnf:/etc/mysql/conf.d/lanager.cnf
         networks:
             - app-network
 networks:
