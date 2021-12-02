@@ -12,7 +12,7 @@ services:
         volumes:
             - laravel-storage:/var/www/lanager/storage
             - ./configs/app/php.ini:/etc/php7/conf.d/lanager.ini
-            - ./configs/app/nginx.conf:/etc/nginx/conf.d/lanager.conf
+            - ./configs/app/nginx.conf:/etc/nginx/nginx.conf
         environment:
             APP_NAME: ${APP_NAME:-LANager}
             APP_ENV: ${APP_ENV:-production}
