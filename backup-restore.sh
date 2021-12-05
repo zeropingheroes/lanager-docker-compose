@@ -44,7 +44,7 @@ if [ "$( docker container inspect -f '{{.State.Status}}' $DB_CONTAINER_NAME )" !
 fi
 
 echo "Getting image ID for local LANager image"
-LOCAL_IMAGE_ID=$(docker images --filter="reference=lanager_app" --quiet)
+LOCAL_IMAGE_ID=$(docker images --filter="reference=zeropingheroes/lanager:develop" --quiet)
 
 if [[ -z "$LOCAL_IMAGE_ID" ]]; then
     echo "Error: could not find image ID for local LANager image"
@@ -81,14 +81,14 @@ echo "Loading database credentials from the .env file into environment variables
 source "$LOCAL_ENV_FILENAME"
 
 echo "Restoring database data from $DB_BACKUP_FILENAME"
-docker run -i -e "MYSQL_PWD=$DB_ROOT_PASSWORD" --network lanager_app-network --rm mysql:8 \
-   mysql "-h$DB_HOST" -uroot "$DB_DATABASE" < "$BACKUP_FOLDER/$DB_BACKUP_FILENAME"
+docker run -i -e "MYSQL_PWD=$DB_ROOT_PASSWORD" --network lanager-docker-compose_app-network --rm mysql:8 \
+   mysql "-hDB" -uroot "lanager" < "$BACKUP_FOLDER/$DB_BACKUP_FILENAME"
 
 echo "Destroying all data in the $STORAGE_VOLUME_NAME volume"
-docker run --rm --volumes-from app -v "$BACKUP_FOLDER":/restore php:7.4-fpm rm -rf /var/www/storage/*
+docker run --rm --volumes-from app -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop rm -rf /var/www/storage/*
 
 echo "Restoring files from the storage directory into the $STORAGE_VOLUME_NAME volume"
-docker run --rm --volumes-from app -v "$BACKUP_FOLDER":/restore php:7.4-fpm tar xf "/restore/$STORAGE_BACKUP_FILENAME" \
+docker run --rm --volumes-from app -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop tar xf "/restore/$STORAGE_BACKUP_FILENAME" \
    -C /
 
 echo "Removing temporary directory"
