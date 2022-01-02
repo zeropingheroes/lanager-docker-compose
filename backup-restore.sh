@@ -57,7 +57,7 @@ source "$LOCAL_ENV_FILENAME"
 
 echo "Restoring database data from $DB_BACKUP_FILENAME"
 docker run -i -e "MYSQL_PWD=$DB_ROOT_PASSWORD" --network lanager-docker-compose_app-network --rm mysql:8 \
-   mysql "-hDB" -uroot "lanager" < "$BACKUP_FOLDER/$DB_BACKUP_FILENAME"
+   mysql -hDB -uroot lanager < "$BACKUP_FOLDER/$DB_BACKUP_FILENAME"
 
 echo "Destroying all data in the $STORAGE_VOLUME_NAME volume"
 docker run --rm --volumes-from app -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop rm -rf /var/www/storage/*
