@@ -10,7 +10,7 @@ if [ "$( docker container inspect -f '{{.State.Status}}' $CONTAINER_NAME )" != "
 fi
 
 DATE=$(date +"%Y-%m-%d")
-BACKUP_NAME="lanager-backup-$DATE-build-$LANAGER_IMAGE_ID"
+BACKUP_NAME="lanager-backup-$DATE"
 BACKUP_FILE="$BACKUP_NAME.tar.gz"
 TEMP_DIR="/tmp"
 DB_BACKUP_FILE="$TEMP_DIR/$BACKUP_NAME/lanager-database.sql"
