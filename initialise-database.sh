@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+echo "WARNING: This will delete any data in the LANager database"
+
+read -p "Do you wish to continue? " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    exit
+fi
+
 # Create the database structure
 docker exec -it app php artisan migrate:fresh --force
 
