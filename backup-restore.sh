@@ -43,31 +43,6 @@ if [ "$( docker container inspect -f '{{.State.Status}}' $DB_CONTAINER_NAME )" !
     exit 1;
 fi
 
-echo "Getting image ID for local LANager image"
-LOCAL_IMAGE_ID=$(docker images --filter="reference=zeropingheroes/lanager:develop" --quiet)
-
-if [[ -z "$LOCAL_IMAGE_ID" ]]; then
-    echo "Error: could not find image ID for local LANager image"
-    exit 1
-fi
-
-echo "Getting image ID from backup filename"
-
-if [[ $1 =~ ([0-9a-fA-F]{12}) ]]; then
-  BACKUP_IMAGE_ID="${BASH_REMATCH[1]}"
-else
-  echo "Error: could not find image ID in backup filename"
-  exit 1
-fi
-
-echo "Checking LANager backup image ID matches local LANager image ID"
-if [[ "$BACKUP_IMAGE_ID" != "$LOCAL_IMAGE_ID" ]]; then
-    echo "Error: Local image ID ($LOCAL_IMAGE_ID) is different to backup image ID ($BACKUP_IMAGE_ID)"
-    exit 1
-else
-    echo "Image IDs match: $BACKUP_IMAGE_ID"
-fi
-
 echo "Extracting backup file into $BACKUP_FOLDER"
 tar xzf "$1" -C "$TEMP_DIR"
 

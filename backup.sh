@@ -9,9 +9,6 @@ if [ "$( docker container inspect -f '{{.State.Status}}' $CONTAINER_NAME )" != "
     exit 1;
 fi
 
-echo "Getting image ID for local LANager image"
-LANAGER_IMAGE_ID=$(docker images --filter="reference=lanager_app" --quiet)
-
 DATE=$(date +"%Y-%m-%d")
 BACKUP_NAME="lanager-backup-$DATE-build-$LANAGER_IMAGE_ID"
 BACKUP_FILE="$BACKUP_NAME.tar.gz"
