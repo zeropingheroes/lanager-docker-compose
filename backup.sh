@@ -27,9 +27,9 @@ echo "Dumping database data into $DB_BACKUP_FILE"
 docker run -it -e MYSQL_PWD="$DB_ROOT_PASSWORD" --network lanager-docker-compose_app-network --rm mysql:8 \
        mysqldump -hDB -uroot --add-drop-database --databases lanager > "$DB_BACKUP_FILE"
 
-echo "Backing up the storage/ directory stored in the lanager_laravel-storage volume into $TEMP_DIR/$BACKUP_NAME/$STORAGE_BACKUP_FILE"
-docker run --rm --volumes-from app -v "$TEMP_DIR":/backup php:7.4-fpm tar cf "/backup/$BACKUP_NAME/$STORAGE_BACKUP_FILE" \
-   /var/www/storage
+echo "Backing up the storage/ directory stored in the lanager_laravel-storage volume"
+docker run --rm --volumes-from app -v "$TEMP_DIR":/backup mysql:8 tar cf "/backup/$BACKUP_NAME/$STORAGE_BACKUP_FILE" \
+   /var/www/lanager/storage
 
 echo "Backing up the .env file into $ENV_BACKUP_FILE"
 cp .env "$ENV_BACKUP_FILE"
