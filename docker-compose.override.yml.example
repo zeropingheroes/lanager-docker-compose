@@ -3,9 +3,7 @@ services:
 
     app:
         volumes:
-            - "$PATH_TO_LANAGER/:/var/www"
-            - "$PATH_TO_LANAGER/storage:/var/www/storage"
-        user: "${UID}:${GID}"
+            - "$PATH_TO_LANAGER:/var/www/lanager"
     db:
         ports:
             - "3306:3306"
