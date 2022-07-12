@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ $* != *--skip-warnings* ]]; then
+if [[ -z "$1" ]] ; then
 
     echo "WARNING: This will delete all database data!"
 
@@ -27,6 +27,9 @@ fi
 echo "Changing APP_ENV to \"testing\""
 export APP_ENV="testing"
 
+echo "Setting Behat & Mink configuration"
+export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "http://localhost:8000/"}}}'
+
 echo "Reloading containers"
 docker-compose up --detach
 
@@ -34,10 +37,11 @@ echo "Starting Laravel's built-in webserver in the background"
 docker exec --detach "$CONTAINER_NAME" php artisan serve
 
 echo "Running Behat tests"
-docker exec -it "$CONTAINER_NAME" sh -c "export BEHAT_PARAMS='{\"extensions\" : {\"Behat\\\\MinkExtension\" : {\"base_url\" : \"http://localhost:8000/\"}}}' && vendor/bin/behat --format progress"
+docker exec -it "$CONTAINER_NAME" vendor/bin/behat "$@"
 
-echo "Resetting APP_ENV to default value"
+echo "Resetting APP_ENV and BEHAT_PARAMS to default value"
 unset APP_ENV
+unset BEHAT_PARAMS
 
 echo "Reloading containers"
 docker-compose up --detach

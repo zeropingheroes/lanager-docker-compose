@@ -35,6 +35,7 @@ services:
             SESSION_DRIVER: ${SESSION_DRIVER:-database}
             SESSION_LIFETIME: ${SESSION_LIFETIME:-7200}
             LOG_CHANNEL: ${LOG_CHANNEL:-stdout}
+            BEHAT_PARAMS: ${BEHAT_PARAMS:-}
         networks:
             - app-network
         depends_on:
