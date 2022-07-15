@@ -24,7 +24,7 @@ echo "Loading database credentials from the .env file into environment variables
 source .env
 
 echo "Dumping database data into $DB_BACKUP_FILE"
-docker run -it -e MYSQL_PWD="$DB_ROOT_PASSWORD" --network lanager-docker-compose_app-network --rm mysql:8 \
+docker run -t -e MYSQL_PWD="$DB_ROOT_PASSWORD" --network lanager-docker-compose_app-network --rm mysql:8 \
        mysqldump -hDB -uroot --add-drop-database --databases lanager > "$DB_BACKUP_FILE"
 
 echo "Backing up the storage/ directory stored in the lanager_laravel-storage volume"
