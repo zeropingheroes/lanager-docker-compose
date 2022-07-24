@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
     app:
-        image: zeropingheroes/lanager:develop
+        image: zeropingheroes/lanager:stable
         container_name: app
         restart: unless-stopped
         tty: true
