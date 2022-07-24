@@ -1,7 +1,7 @@
 LANager Docker Compose
 =======
 
-This repository contains the configuration to deploy LANager and all its dependencies using `docker-compose`.
+This repository contains the configuration to set up and run LANager and all its dependencies using `docker-compose`.
 
-There is currently no stable release - please switch to the [`develop`](
-https://github.com/zeropingheroes/lanager-docker-compose/tree/develop) branch to use this configuration.
+For usage instructions, please refer to [zeropingheroes/lanager](
+https://github.com/zeropingheroes/lanager/blob/develop/README.md).
