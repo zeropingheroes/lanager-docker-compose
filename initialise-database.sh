@@ -8,11 +8,13 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     exit
 fi
 
+APP_CONTAINER_NAME="lanager"
+
 # Create the database structure
-docker exec -it app php artisan migrate:fresh --force
+docker exec -it $APP_CONTAINER_NAME php artisan migrate:fresh --force
 
 # Fill the database with the required base data
-docker exec -it app php artisan db:seed --force --class=Database\\Seeders\\DatabaseSeeder
+docker exec -it $APP_CONTAINER_NAME php artisan db:seed --force --class=Database\\Seeders\\DatabaseSeeder
 
 # Import Steam apps data from CSV file
-docker exec -it app php artisan lanager:import-steam-apps-csv
+docker exec -it $APP_CONTAINER_NAME php artisan lanager:import-steam-apps-csv

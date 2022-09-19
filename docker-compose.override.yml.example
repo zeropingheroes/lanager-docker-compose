@@ -1,7 +1,7 @@
 version: '3.8'
 services:
 
-    app:
+    lanager:
         volumes:
             - "$PATH_TO_LANAGER:/var/www/lanager"
     db:

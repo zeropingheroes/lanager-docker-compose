@@ -12,15 +12,15 @@ if [[ -z "$1" ]] ; then
 
 fi
 
-CONTAINER_NAME="app"
+APP_CONTAINER_NAME="lanager"
 
-if [ "$( docker container inspect -f '{{.State.Status}}' $CONTAINER_NAME )" != "running" ]; then
-    echo "Error: Container \"$CONTAINER_NAME\" is not running"
+if [ "$( docker container inspect -f '{{.State.Status}}' $APP_CONTAINER_NAME )" != "running" ]; then
+    echo "Error: Container \"$APP_CONTAINER_NAME\" is not running"
     exit 1;
 fi
 
-if ! docker exec "$CONTAINER_NAME" test -d features; then
-    echo "Error: \"features\" folder not accessible by "$CONTAINER_NAME" container. Please follow the development environment setup steps."
+if ! docker exec "$APP_CONTAINER_NAME" test -d features; then
+    echo "Error: \"features\" folder not accessible by "$APP_CONTAINER_NAME" container. Please follow the development environment setup steps."
     exit 1
 fi
 
@@ -34,10 +34,10 @@ echo "Reloading containers"
 docker-compose up --detach
 
 echo "Starting Laravel's built-in webserver in the background"
-docker exec --detach "$CONTAINER_NAME" php artisan serve
+docker exec --detach "$APP_CONTAINER_NAME" php artisan serve
 
 echo "Running Behat tests"
-docker exec -it "$CONTAINER_NAME" vendor/bin/behat "$@"
+docker exec -it "$APP_CONTAINER_NAME" vendor/bin/behat "$@"
 
 echo "Resetting APP_ENV and BEHAT_PARAMS to default value"
 unset APP_ENV

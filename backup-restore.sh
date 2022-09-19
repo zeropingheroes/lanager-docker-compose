@@ -2,9 +2,10 @@
 
 set -e
 
-APP_CONTAINER_NAME="app"
+APP_CONTAINER_NAME="lanager"
 DB_CONTAINER_NAME="db"
 STORAGE_VOLUME_NAME="lanager_laravel-storage"
+NETWORK_NAME="lanager-docker-compose_lanager-network"
 
 TEMP_DIR="/tmp"
 BACKUP_FOLDER="$TEMP_DIR/${1%%.*}"
@@ -56,14 +57,14 @@ echo "Loading database credentials from the .env file into environment variables
 source "$LOCAL_ENV_FILENAME"
 
 echo "Restoring database data from $DB_BACKUP_FILENAME"
-docker run -i -e "MYSQL_PWD=$DB_ROOT_PASSWORD" --network lanager-docker-compose_app-network --rm mysql:8 \
+docker run -i -e "MYSQL_PWD=$DB_ROOT_PASSWORD" --network $NETWORK_NAME --rm mysql:8 \
    mysql -hDB -uroot lanager < "$BACKUP_FOLDER/$DB_BACKUP_FILENAME"
 
 echo "Destroying all data in the $STORAGE_VOLUME_NAME volume"
-docker run --rm --volumes-from app -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop rm -rf /var/www/storage/*
+docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop rm -rf /var/www/storage/*
 
 echo "Restoring files from the storage directory into the $STORAGE_VOLUME_NAME volume"
-docker run --rm --volumes-from app -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop tar xf "/restore/$STORAGE_BACKUP_FILENAME" \
+docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop tar xf "/restore/$STORAGE_BACKUP_FILENAME" \
    -C /
 
 echo "Removing temporary directory"
