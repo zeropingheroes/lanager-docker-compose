@@ -16,21 +16,21 @@ services:
         environment:
             APP_NAME: ${APP_NAME:-LANager}
             APP_ENV: ${APP_ENV:-production}
-            APP_KEY: ${APP_KEY}
+            APP_KEY: ${APP_KEY:?APP_KEY is required}
             APP_DEBUG: ${APP_DEBUG:-false}
-            APP_URL: ${APP_URL}
-            APP_TIMEZONE: ${APP_TIMEZONE}
+            APP_URL: ${APP_URL:-http://localhost}
+            APP_TIMEZONE: ${APP_TIMEZONE:-Europe/London}
             APP_LOCALE: ${APP_LOCALE:-en}
             TRUSTED_PROXIES: ${TRUSTED_PROXIES:-172.16.0.0/12}
-            STEAM_API_KEY: ${STEAM_API_KEY}
-            GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+            STEAM_API_KEY: ${STEAM_API_KEY:?STEAM_API_KEY is required}
+            GOOGLE_API_KEY: ${GOOGLE_API_KEY:?GOOGLE_API_KEY is required}
             DB_CONNECTION: ${DB_CONNECTION:-mysql}
             DB_HOST: ${DB_HOST:-db}
             DB_PORT: ${DB_PORT:-3306}
             DB_DATABASE: ${DB_DATABASE:-lanager}
             DB_USERNAME: ${DB_USERNAME:-lanager}
-            DB_PASSWORD: ${DB_PASSWORD}
-            DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+            DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required}
             CACHE_DRIVER: ${CACHE_DRIVER:-file}
             SESSION_DRIVER: ${SESSION_DRIVER:-database}
             SESSION_LIFETIME: ${SESSION_LIFETIME:-7200}
