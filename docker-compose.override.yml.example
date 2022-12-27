@@ -5,6 +5,8 @@ services:
         volumes:
             - "$PATH_TO_LANAGER:/var/www/lanager"
             - "$PATH_TO_LANAGER_STORAGE:/var/www/lanager/storage"
+        environment:
+            DUSK_DRIVER_URL: "http://selenium:4444/wd/hub"
         depends_on:
             - selenium
     db:
