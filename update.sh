@@ -2,6 +2,13 @@
 
 set -e
 
+echo "Clearing Laravel caches"
+docker exec -it lanager php artisan cache:clear
+docker exec -it lanager php artisan clear-compiled
+
+echo "Stopping containers"
+docker-compose down
+
 echo "Updating Git repo zeropingheroes/lanager-docker-compose"
 git pull
 
