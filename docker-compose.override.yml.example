@@ -1,9 +1,23 @@
 version: '3.8'
 services:
 
-    app:
+    lanager:
         volumes:
             - "$PATH_TO_LANAGER:/var/www/lanager"
+            - "$PATH_TO_LANAGER_STORAGE:/var/www/lanager/storage"
+        environment:
+            DUSK_DRIVER_URL: "http://selenium:4444/wd/hub"
+        depends_on:
+            - selenium
     db:
         ports:
             - "3306:3306"
+    selenium:
+        container_name: selenium
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - './selenium:/selenium'
+        networks:
+            - lanager-network
+        ports:
+            - "5900:5900"

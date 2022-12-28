@@ -2,10 +2,11 @@
 
 set -e
 
-CONTAINER_NAME="app"
+APP_CONTAINER_NAME="lanager"
+NETWORK_NAME="lanager-docker-compose_lanager-network"
 
-if [ "$( docker container inspect -f '{{.State.Status}}' $CONTAINER_NAME )" != "running" ]; then
-    echo "Error: Container \"$CONTAINER_NAME\" is not running"
+if [ "$( docker container inspect -f '{{.State.Status}}' $APP_CONTAINER_NAME )" != "running" ]; then
+    echo "Error: Container \"$APP_CONTAINER_NAME\" is not running"
     exit 1;
 fi
 
@@ -24,11 +25,11 @@ echo "Loading database credentials from the .env file into environment variables
 source .env
 
 echo "Dumping database data into $DB_BACKUP_FILE"
-docker run -t -e MYSQL_PWD="$DB_ROOT_PASSWORD" --network lanager-docker-compose_app-network --rm mysql:8 \
+docker run -t -e MYSQL_PWD="$DB_ROOT_PASSWORD" --network $NETWORK_NAME --rm mysql:8 \
        mysqldump -hDB -uroot --add-drop-database --databases lanager > "$DB_BACKUP_FILE"
 
 echo "Backing up the storage/ directory stored in the lanager_laravel-storage volume"
-docker run --rm --volumes-from app -v "$TEMP_DIR":/backup mysql:8 tar cf "/backup/$BACKUP_NAME/$STORAGE_BACKUP_FILE" \
+docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$TEMP_DIR":/backup mysql:8 tar cf "/backup/$BACKUP_NAME/$STORAGE_BACKUP_FILE" \
    /var/www/lanager/storage
 
 echo "Backing up the .env file into $ENV_BACKUP_FILE"
