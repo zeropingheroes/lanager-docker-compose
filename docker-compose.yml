@@ -33,7 +33,7 @@ services:
             CACHE_STORE: ${CACHE_DRIVER:-file}
             SESSION_DRIVER: ${SESSION_DRIVER:-database}
             SESSION_LIFETIME: ${SESSION_LIFETIME:-7200}
-            LOG_CHANNEL: ${LOG_CHANNEL:-stdout}
+            LOG_CHANNEL: ${LOG_CHANNEL:-stderr}
             DUSK_DRIVER_URL: ${DUSK_DRIVER_URL:-}
         networks:
             - lanager-network
