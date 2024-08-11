@@ -18,7 +18,7 @@ services:
             APP_KEY: ${APP_KEY:?APP_KEY is required}
             APP_DEBUG: ${APP_DEBUG:-false}
             APP_URL: ${APP_URL:-http://localhost}
-            APP_TIMEZONE: ${APP_TIMEZONE:-Europe/London}
+            APP_TIMEZONE: ${APP_TIMEZONE:-UTC}
             APP_LOCALE: ${APP_LOCALE:-en}
             STEAM_API_KEY: ${STEAM_API_KEY:?STEAM_API_KEY is required}
             GOOGLE_API_KEY: ${GOOGLE_API_KEY:?GOOGLE_API_KEY is required}
