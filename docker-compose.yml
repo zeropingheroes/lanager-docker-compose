@@ -20,7 +20,6 @@ services:
             APP_URL: ${APP_URL:-http://localhost}
             APP_TIMEZONE: ${APP_TIMEZONE:-Europe/London}
             APP_LOCALE: ${APP_LOCALE:-en}
-            TRUSTED_PROXIES: ${TRUSTED_PROXIES:-172.16.0.0/12}
             STEAM_API_KEY: ${STEAM_API_KEY:?STEAM_API_KEY is required}
             GOOGLE_API_KEY: ${GOOGLE_API_KEY:?GOOGLE_API_KEY is required}
             DB_CONNECTION: ${DB_CONNECTION:-mysql}
