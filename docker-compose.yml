@@ -21,6 +21,7 @@ services:
             APP_TIMEZONE: ${APP_TIMEZONE:-UTC}
             APP_LOCALE: ${APP_LOCALE:-en}
             STEAM_API_KEY: ${STEAM_API_KEY:?STEAM_API_KEY is required}
+            TRUSTED_PROXIES: ${APP_LOCALE:-}
             DB_CONNECTION: ${DB_CONNECTION:-mysql}
             DB_HOST: ${DB_HOST:-db}
             DB_PORT: ${DB_PORT:-3306}
