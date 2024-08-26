@@ -8,7 +8,7 @@ STORAGE_VOLUME_NAME="lanager_laravel-storage"
 NETWORK_NAME="lanager-docker-compose_lanager-network"
 
 TEMP_DIR="/tmp"
-BACKUP_FOLDER="$TEMP_DIR/${1%%.*}"
+BACKUP_FOLDER="$TEMP_DIR/${1%.tar.gz}"
 STORAGE_BACKUP_FILENAME="lanager-storage.tar"
 DB_BACKUP_FILENAME="lanager-database.sql"
 ENV_BACKUP_FILENAME="lanager-environment.env"
