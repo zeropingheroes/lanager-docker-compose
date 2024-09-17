@@ -1,5 +1,4 @@
 services:
-
     lanager:
         build:
             context: $PATH_TO_LANAGER
