@@ -1,7 +1,7 @@
 services:
 
     lanager:
-        image: zeropingheroes/lanager:develop
+        image: zeropingheroes/lanager:stable
         container_name: lanager
         restart: unless-stopped
         tty: true
