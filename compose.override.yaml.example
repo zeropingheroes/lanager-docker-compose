@@ -26,3 +26,4 @@ services:
             - lanager-network
         ports:
             - "5900:5900"
+        shm_size: '2gb'
