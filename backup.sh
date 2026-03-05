@@ -30,7 +30,7 @@ docker run -t -e MYSQL_PWD="$DB_ROOT_PASSWORD" --network $NETWORK_NAME --rm mysq
 
 echo "Backing up the storage/ directory stored in the lanager_laravel-storage volume"
 docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$TEMP_DIR":/backup mysql:8 tar cf "/backup/$BACKUP_NAME/$STORAGE_BACKUP_FILE" \
-   /var/www/lanager/storage
+   /app/storage
 
 echo "Backing up the .env file into $ENV_BACKUP_FILE"
 cp .env "$ENV_BACKUP_FILE"
