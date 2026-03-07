@@ -5,7 +5,7 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "8080:80"
+            - "8080:8000"
         volumes:
             - laravel-storage:/app/storage
             - ./configs/app/lanager-php.ini:/usr/local/etc/php/conf.d/lanager-php.ini
@@ -30,6 +30,7 @@ services:
             SESSION_DRIVER: ${SESSION_DRIVER:-database}
             SESSION_LIFETIME: ${SESSION_LIFETIME:-7200}
             LOG_CHANNEL: ${LOG_CHANNEL:-stderr}
+            OCTANE_SERVER: ${OCTANE_SERVER:-frankenphp}
         networks:
             - lanager-network
         depends_on:
