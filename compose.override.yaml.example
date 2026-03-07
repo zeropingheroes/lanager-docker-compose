@@ -4,6 +4,7 @@ services:
             context: $PATH_TO_LANAGER_GIT_REPO
             dockerfile: Dockerfile
             target: dev
+        entrypoint: php artisan octane:frankenphp --workers=1 --max-requests=1
         volumes:
             - "$PATH_TO_LANAGER_GIT_REPO:/app"
             - "$PATH_TO_LANAGER_GIT_REPO/storage:/app/storage"
