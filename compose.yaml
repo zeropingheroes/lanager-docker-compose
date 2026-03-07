@@ -34,10 +34,10 @@ services:
             - lanager-network
         depends_on:
             - db
-#        labels:
-#            ofelia.enabled: "true"
-#            ofelia.job-exec.artisan-schedule-run.schedule: "@every 1m"
-#            ofelia.job-exec.artisan-schedule-run.command: "php /app/artisan schedule:run"
+        labels:
+            ofelia.enabled: "true"
+            ofelia.job-exec.artisan-schedule-run.schedule: "@every 1m"
+            ofelia.job-exec.artisan-schedule-run.command: "php /app/artisan schedule:run"
     scheduler:
         image: mcuadros/ofelia:latest
         container_name: scheduler
