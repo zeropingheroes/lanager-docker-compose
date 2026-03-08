@@ -19,8 +19,9 @@ git pull
 echo "Updating Docker image zeropingheroes/lanager:develop"
 docker pull zeropingheroes/lanager:develop
 
-echo "Restarting containers"
-docker-compose up --detach
+echo "Fixing storage directory permissions"
+./fix-permissions.sh
+
 echo "Restarting containers and waiting for them all to be healthy"
 docker-compose up --detach --wait
 

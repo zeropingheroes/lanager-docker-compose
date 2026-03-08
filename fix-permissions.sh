@@ -9,5 +9,3 @@ docker run --rm --workdir /app/storage --volumes-from "${APP_CONTAINER_NAME}" bu
 
 echo "Changing /app/storage permissions to 775"
 docker run --rm --workdir /app/storage --volumes-from "${APP_CONTAINER_NAME}" busybox chmod -R 775 .
-
-echo "Done"
