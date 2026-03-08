@@ -21,3 +21,6 @@ docker pull zeropingheroes/lanager:develop
 
 echo "Restarting containers"
 docker-compose up --detach
+
+echo "Running migrations"
+docker exec -it lanager php artisan migrate
