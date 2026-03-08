@@ -16,9 +16,6 @@ docker-compose down
 echo "Updating Docker image zeropingheroes/lanager:develop"
 docker pull zeropingheroes/lanager:develop
 
-echo "Fixing storage directory permissions"
-./fix-permissions.sh
-
 echo "Restarting containers and waiting for them all to be healthy"
 docker-compose up --detach --wait
 
