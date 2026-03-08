@@ -13,9 +13,6 @@ docker exec -it lanager php artisan view:clear
 echo "Stopping containers"
 docker-compose down
 
-echo "Updating Git repo zeropingheroes/lanager-docker-compose"
-git pull
-
 echo "Updating Docker image zeropingheroes/lanager:develop"
 docker pull zeropingheroes/lanager:develop
 
