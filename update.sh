@@ -11,13 +11,13 @@ docker exec -it lanager php artisan route:clear
 docker exec -it lanager php artisan view:clear
 
 echo "Stopping containers"
-docker-compose down
+docker compose down
 
 echo "Updating Docker image zeropingheroes/lanager:develop"
 docker pull zeropingheroes/lanager:develop
 
 echo "Restarting containers and waiting for them all to be healthy"
-docker-compose up --detach --wait
+docker compose up --detach --wait
 
 echo "Running migrations"
 docker exec -it lanager php artisan migrate
