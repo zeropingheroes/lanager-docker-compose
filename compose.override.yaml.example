@@ -4,14 +4,20 @@ services:
             context: $PATH_TO_LANAGER_GIT_REPO
             dockerfile: Dockerfile
             target: dev
-        command: php artisan octane:frankenphp --workers=1 --max-requests=1 # --log-level=debug
+        command: php artisan octane:start --server=frankenphp
+                                          --caddyfile=/etc/frankenphp/lanager-xdebug.caddyfile
+                                          --workers=1
+                                          --max-requests=1
         volumes:
             - "$PATH_TO_LANAGER_GIT_REPO:/app"
             - "$PATH_TO_LANAGER_GIT_REPO/storage:/app/storage"
             - "$PATH_TO_LANAGER_GIT_REPO/.env:/app/.env"
-            # - "./configs/app/lanager-php-xdebug.ini:/usr/local/etc/php/conf.d/lanager-php-xdebug.ini"
+            - "./configs/app/lanager-php-xdebug.ini:/usr/local/etc/php/conf.d/lanager-php-xdebug.ini"
+            - "./configs/app/lanager-xdebug.caddyfile:/etc/frankenphp/lanager-xdebug.caddyfile"
         environment:
             DUSK_DRIVER_URL: "http://selenium:4444/wd/hub"
+            SERVER_NAME: "http://localhost:8000" # Required for lanager-xdebug.caddyfile
+            PHP_IDE_CONFIG: "serverName=localhost" # Required for xdebug
         depends_on:
             - selenium
     db:
