@@ -36,9 +36,9 @@ services:
         depends_on:
             - db
         labels:
-            ofelia.enabled: "true"
+            ofelia.enabled: true
             ofelia.job-exec.artisan-schedule-run.schedule: "@every 1m"
-            ofelia.job-exec.artisan-schedule-run.command: "php /app/artisan schedule:run"
+            ofelia.job-exec.artisan-schedule-run.command: php /app/artisan schedule:run
     scheduler:
         image: mcuadros/ofelia:latest
         container_name: scheduler
@@ -54,7 +54,7 @@ services:
         restart: unless-stopped
         tty: true
         expose:
-            - "3306"
+            - 3306
         environment:
             MYSQL_DATABASE: ${DB_DATABASE:-lanager}
             MYSQL_USER: ${DB_USERNAME:-lanager}
