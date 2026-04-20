@@ -1,17 +1,14 @@
 services:
-
     lanager:
-        image: zeropingheroes/lanager:stable
+        image: zeropingheroes/lanager:develop
         container_name: lanager
         restart: unless-stopped
         tty: true
         ports:
-            - "8080:8080"
-        working_dir: /var/www/lanager
+            - "8000:8000"
         volumes:
-            - laravel-storage:/var/www/lanager/storage
-            - ./configs/app/lanager-php.ini:/etc/php83/conf.d/lanager-php.ini
-            - ./configs/app/lanager-nginx.conf:/etc/nginx/conf.d/default.conf
+            - laravel-storage:/app/storage
+            - ./configs/app/lanager-php.ini:/usr/local/etc/php/conf.d/lanager-php.ini
         environment:
             APP_NAME: ${APP_NAME:-LANager}
             APP_ENV: ${APP_ENV:-production}
@@ -33,14 +30,15 @@ services:
             SESSION_DRIVER: ${SESSION_DRIVER:-database}
             SESSION_LIFETIME: ${SESSION_LIFETIME:-7200}
             LOG_CHANNEL: ${LOG_CHANNEL:-stderr}
+            OCTANE_SERVER: ${OCTANE_SERVER:-frankenphp}
         networks:
             - lanager-network
         depends_on:
             - db
         labels:
-            ofelia.enabled: "true"
+            ofelia.enabled: true
             ofelia.job-exec.artisan-schedule-run.schedule: "@every 1m"
-            ofelia.job-exec.artisan-schedule-run.command: "php /var/www/lanager/artisan schedule:run"
+            ofelia.job-exec.artisan-schedule-run.command: php /app/artisan schedule:run
     scheduler:
         image: mcuadros/ofelia:latest
         container_name: scheduler
@@ -56,7 +54,7 @@ services:
         restart: unless-stopped
         tty: true
         expose:
-            - "3306"
+            - 3306
         environment:
             MYSQL_DATABASE: ${DB_DATABASE:-lanager}
             MYSQL_USER: ${DB_USERNAME:-lanager}

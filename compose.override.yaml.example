@@ -1,0 +1,30 @@
+services:
+    lanager:
+        build:
+            context: $PATH_TO_LANAGER_GIT_REPO
+            dockerfile: Dockerfile
+            target: dev
+        command: php artisan octane:start --server=frankenphp
+                                          --workers=1
+                                          --max-requests=1
+        volumes:
+            - $PATH_TO_LANAGER_GIT_REPO:/app
+            - $PATH_TO_LANAGER_GIT_REPO/storage:/app/storage
+            - $PATH_TO_LANAGER_GIT_REPO/.env:/app/.env
+            - ./configs/app/lanager-php-xdebug.ini:/usr/local/etc/php/conf.d/lanager-php-xdebug.ini
+        environment:
+            DUSK_DRIVER_URL: http://selenium:4444/wd/hub
+            PHP_IDE_CONFIG: serverName=localhost # Required for xdebug
+        depends_on:
+            - selenium
+    db:
+        ports:
+            - "3306:3306"
+    selenium:
+        container_name: selenium
+        image: selenium/standalone-chrome
+        volumes:
+            - ./selenium:/selenium
+        networks:
+            - lanager-network
+        shm_size: "2gb"

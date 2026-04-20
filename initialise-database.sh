@@ -16,5 +16,5 @@ docker exec -it $APP_CONTAINER_NAME php artisan migrate:fresh --force
 # Fill the database with the required base data
 docker exec -it $APP_CONTAINER_NAME php artisan db:seed --force --class=Database\\Seeders\\DatabaseSeeder
 
-# Import Steam apps data from CSV file
-docker exec -it $APP_CONTAINER_NAME php artisan lanager:import-steam-apps-csv
+# Import Steam apps from the Steam API
+docker exec -it $APP_CONTAINER_NAME php artisan lanager:update-steam-apps
