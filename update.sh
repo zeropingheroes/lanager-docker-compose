@@ -13,8 +13,8 @@ docker exec -it lanager php artisan view:clear
 echo "Stopping containers"
 docker compose down
 
-echo "Updating Docker image zeropingheroes/lanager:develop"
-docker pull zeropingheroes/lanager:develop
+echo "Updating Docker image zeropingheroes/lanager:stable"
+docker pull zeropingheroes/lanager:stable
 
 echo "Restarting containers and waiting for them all to be healthy"
 docker compose up --detach --wait
