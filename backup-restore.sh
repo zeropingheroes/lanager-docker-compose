@@ -61,10 +61,10 @@ docker run -i -e "MYSQL_PWD=$DB_ROOT_PASSWORD" --network $NETWORK_NAME --rm mysq
    mysql -hDB -uroot lanager < "$BACKUP_FOLDER/$DB_BACKUP_FILENAME"
 
 echo "Destroying all data in the $STORAGE_VOLUME_NAME volume"
-docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop rm -rf /app/storage/*
+docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:stable rm -rf /app/storage/*
 
 echo "Restoring files from the storage directory into the $STORAGE_VOLUME_NAME volume"
-docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:develop tar xf "/restore/$STORAGE_BACKUP_FILENAME" \
+docker run --rm --volumes-from $APP_CONTAINER_NAME -v "$BACKUP_FOLDER":/restore zeropingheroes/lanager:stable tar xf "/restore/$STORAGE_BACKUP_FILENAME" \
    -C /
 
 echo "Removing temporary directory"
