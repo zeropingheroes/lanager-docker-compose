@@ -1,16 +1,16 @@
 services:
     lanager:
         build:
-            context: $PATH_TO_LANAGER_GIT_REPO
+            context: $PATH_TO_LANAGER
             dockerfile: Dockerfile
             target: dev
         command: php artisan octane:start --server=frankenphp
                                           --workers=1
                                           --max-requests=1
         volumes:
-            - $PATH_TO_LANAGER_GIT_REPO:/app
-            - $PATH_TO_LANAGER_GIT_REPO/storage:/app/storage
-            - $PATH_TO_LANAGER_GIT_REPO/.env:/app/.env
+            - $PATH_TO_LANAGER:/app
+            - $PATH_TO_LANAGER/storage:/app/storage
+            - $PATH_TO_LANAGER/.env:/app/.env
             - ./configs/app/lanager-php-xdebug.ini:/usr/local/etc/php/conf.d/lanager-php-xdebug.ini
         environment:
             DUSK_DRIVER_URL: http://selenium:4444/wd/hub
